@@ -26,3 +26,9 @@ const kWalletCard = TextStyle(
   color: Colors.white,
   fontSize: 10.0,
 );
+
+const kEnterSummOnAdd = TextStyle(
+  fontSize: 36.0,
+  fontFamily: "Montserrat",
+  fontWeight: FontWeight.w600
+);
