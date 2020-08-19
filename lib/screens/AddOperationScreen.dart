@@ -15,7 +15,7 @@ class _AddOperationScreenState extends State<AddOperationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Добавить операцию"),
+        title: Text("Добавить операцию", style: kAppBarText,),
       ),
       backgroundColor: Color(0xff2BC773),
       floatingActionButton: FloatingActionButton.extended(
@@ -41,7 +41,9 @@ class _AddOperationScreenState extends State<AddOperationScreen> {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20.0),
                       topRight: Radius.circular(20.0))),
-              child: Column(children: [
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                 TextField(
                   onChanged: (val) {},
                   autofocus: true,
@@ -93,6 +95,37 @@ class _AddOperationScreenState extends State<AddOperationScreen> {
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 40.0
+                ),
+                Text("Введите название операции", style: kSemiBoldTextStyle),
+                SizedBox(height: 20.0),
+                TextField(
+                  onChanged: (val) {},
+                  textAlign: TextAlign.start,
+                  keyboardType: TextInputType.name,
+                  decoration: InputDecoration(
+                      hintText: "Например: Еда, Интернет, Бургер",
+                      hintStyle: TextStyle(color: Color(0xffB6B6B6)),
+                  ),
+                  style: kOperationInfoEnter,
+                ),
+                SizedBox(
+                  height: 20.0
+                ),
+                Text("Введите краткое описание (по желанию)", style: kSemiBoldTextStyle),
+                SizedBox(height: 20.0),
+                TextField(
+                  onChanged: (val) {},
+                  textAlign: TextAlign.start,
+                  keyboardType: TextInputType.name,
+                  decoration: InputDecoration(
+                      hintText: "Например: В доме не осталось еды",
+                      hintStyle: TextStyle(color: Color(0xffB6B6B6)),
+                  ),
+                  style: kOperationInfoEnter,
+                ),
+
 
               ]),
             ),

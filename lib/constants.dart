@@ -1,5 +1,9 @@
 import "package:flutter/material.dart";
 
+const kAppBarText = TextStyle(
+  color: Colors.white
+);
+
 const kRegularTextStyle = TextStyle(
   fontFamily: "Montserrat",
   fontWeight: FontWeight.normal,
@@ -29,6 +33,12 @@ const kWalletCard = TextStyle(
 
 const kEnterSummOnAdd = TextStyle(
   fontSize: 36.0,
+  fontFamily: "Montserrat",
+  fontWeight: FontWeight.w600
+);
+
+const kOperationInfoEnter = TextStyle(
+  fontSize: 12.0,
   fontFamily: "Montserrat",
   fontWeight: FontWeight.w600
 );
