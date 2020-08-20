@@ -1,5 +1,6 @@
 import 'package:finance_manager/screens/AddOperationScreen.dart';
 import 'package:finance_manager/screens/HomeScreen.dart';
+import 'package:finance_manager/screens/LoginScreen.dart';
 import 'package:finance_manager/screens/OperationsScreen.dart';
 import 'package:finance_manager/screens/WalletScreen.dart';
 import 'package:finance_manager/screens/WelcomeScreen.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         // scaffoldBackgroundColor: Colors.blue[800],
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: WelcomeScreen(),
+      home: LoginScreen(),
     );
   }
 }
