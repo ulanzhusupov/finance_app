@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
 
+const kGreenColor = Color(0xff2BC773);
+
 const kAppBarText = TextStyle(color: Colors.white);
 
 const kRegularTextStyle = TextStyle(

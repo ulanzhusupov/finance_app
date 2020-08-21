@@ -1,12 +1,15 @@
+import 'package:finance_manager/provider/UserProvider.dart';
 import 'package:finance_manager/screens/AddOperationScreen.dart';
 import 'package:finance_manager/screens/HomeScreen.dart';
 import 'package:finance_manager/screens/LoginScreen.dart';
 import 'package:finance_manager/screens/OperationsScreen.dart';
+import 'package:finance_manager/screens/RegisterScreen.dart';
 import 'package:finance_manager/screens/WalletScreen.dart';
 import 'package:finance_manager/screens/WelcomeScreen.dart';
 import 'package:finance_manager/widgets/OperationList.dart';
 import 'package:finance_manager/widgets/WalletCards.dart';
 import 'package:flutter/material.dart';
+import "package:provider/provider.dart";
 
 import 'constants.dart';
 
@@ -18,16 +21,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: Color(0xff2BC773),
-        accentColor: Color(0xffFB3B3B),
-        // scaffoldBackgroundColor: Colors.blue[800],
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return ChangeNotifierProvider<UserProvider>(
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primaryColor: Color(0xff2BC773),
+          accentColor: Color(0xffFB3B3B),
+          // scaffoldBackgroundColor: Colors.blue[800],
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: RegisterScreen(),
       ),
-      home: LoginScreen(),
     );
   }
 }
@@ -47,14 +52,15 @@ class TabController extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(
-              builder: (context) => AddOperationScreen(),
-            ));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddOperationScreen(),
+                ));
           },
           label: Text("Добавить операцию", style: kRegularTextStyle),
         ),
-        floatingActionButtonLocation:
-            FloatingActionButtonLocation.centerFloat,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         backgroundColor: Color(0xff2BC773),
         bottomNavigationBar: Container(
           color: Colors.white,
@@ -87,7 +93,3 @@ class TabController extends StatelessWidget {
     );
   }
 }
-
-
-
-

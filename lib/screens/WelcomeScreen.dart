@@ -43,6 +43,7 @@ class WelcomeScreen extends StatelessWidget {
                       Expanded(
                         child: RaisedButton(
                           onPressed: () {},
+                          padding: EdgeInsets.only(top: 22.0, bottom: 22.0),
                           color: Colors.white,
                           child: Text("Войти", style: kRegularTextStyle.copyWith(
                             color: Colors.black
@@ -59,6 +60,7 @@ class WelcomeScreen extends StatelessWidget {
                       Expanded(
                         child: RaisedButton(
                           onPressed: () {},
+                          padding: EdgeInsets.only(top: 22.0, bottom: 22.0),
                           color: Color(0xff2BC773),
                           child: Text("Регистрация", style: kRegularTextStyle,),
                           shape: RoundedRectangleBorder(

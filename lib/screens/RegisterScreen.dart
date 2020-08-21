@@ -2,12 +2,12 @@ import 'package:finance_manager/constants.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_svg/flutter_svg.dart';
 
-class LoginScreen extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Войдите",
+                  "Зарегистрируйтесь",
                   style: kRegularTextStyle.copyWith(fontSize: 28.0),
                   textAlign: TextAlign.center,
                 ),
@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextFormField(
                   validator: (val) {
                     if (val.isEmpty) {
-                      return "Введите ваш email!";
+                      return "Введите ваше имя!";
                     }
                     return null;
                   },
@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(
                           top: 10.0, bottom: 10.0, left: 30.0, right: 30.0),
-                      hintText: "Введите еmail",
+                      hintText: "Введите имя",
                       hintStyle: kRegularTextStyle.copyWith(
                           fontSize: 16.0, color: Colors.white.withOpacity(0.5)),
                       enabledBorder: OutlineInputBorder(
@@ -73,7 +73,31 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(
                           top: 10.0, bottom: 10.0, left: 30.0, right: 30.0),
-                      hintText: "Пароль",
+                      hintText: "Введите email",
+                      hintStyle: kRegularTextStyle.copyWith(
+                          fontSize: 16.0, color: Colors.white.withOpacity(0.5)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                          borderSide: BorderSide(color: Colors.white)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                          borderSide: BorderSide(color: Color(0xff2BC773)))),
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                TextFormField(
+                  validator: (val) {
+                    if (val.isEmpty) {
+                      return "Введите ваш пароль!";
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(
+                          top: 10.0, bottom: 10.0, left: 30.0, right: 30.0),
+                      hintText: "Придумайте пароль",
                       hintStyle: kRegularTextStyle.copyWith(
                           fontSize: 16.0, color: Colors.white.withOpacity(0.5)),
                       enabledBorder: OutlineInputBorder(
@@ -84,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           borderSide: BorderSide(color: Color(0xff2BC773)))),
                 ),
                 SizedBox(height: 50.0),
-                Text("или войдите с помощью",
+                Text("или зарегистрироваться с помощью",
                     style: kRegularTextStyle.copyWith(fontSize: 18.0)),
                 SizedBox(height: 20.0),
                 Row(
@@ -118,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () {},
                         padding: EdgeInsets.only(top: 22.0, bottom: 22.0),
                         color: kGreenColor,
-                        child: Text("Войти", style: kRegularTextStyle),
+                        child: Text("Зарегистрироваться", style: kRegularTextStyle),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40.0),
                         ),
