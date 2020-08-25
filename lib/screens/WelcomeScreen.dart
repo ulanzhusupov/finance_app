@@ -1,3 +1,5 @@
+import 'package:finance_manager/screens/LoginScreen.dart';
+import 'package:finance_manager/screens/RegisterScreen.dart';
 import "package:flutter/material.dart";
 
 import "package:finance_manager/constants.dart";
@@ -12,11 +14,10 @@ class WelcomeScreen extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             color: Colors.black,
-            image: DecorationImage(
-                image: AssetImage("images/back.jpg"),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.8), BlendMode.dstATop)),
+            // image: DecorationImage(
+            //     fit: BoxFit.cover,
+            //     colorFilter: ColorFilter.mode(
+            //         Colors.black.withOpacity(0.8), BlendMode.dstATop)),
           ),
           child: Padding(
             padding: EdgeInsets.all(17.0),
@@ -42,7 +43,9 @@ class WelcomeScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: RaisedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                          },
                           padding: EdgeInsets.only(top: 22.0, bottom: 22.0),
                           color: Colors.white,
                           child: Text("Войти", style: kRegularTextStyle.copyWith(
@@ -59,7 +62,9 @@ class WelcomeScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: RaisedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen()));
+                          },
                           padding: EdgeInsets.only(top: 22.0, bottom: 22.0),
                           color: Color(0xff2BC773),
                           child: Text("Регистрация", style: kRegularTextStyle,),

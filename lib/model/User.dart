@@ -7,83 +7,97 @@ import 'package:finance_manager/model/Operation.dart';
 import 'package:flutter/cupertino.dart';
 import "package:uuid/uuid.dart";
 
-class User extends ChangeNotifier {
+class User {
   
-  User({@required this.uuid, @required this.name, @required this.email});
+  User({@required this.uid, this.email});
 
-  final Uuid uuid;
-  String name;
-  String email;
+  final String uid;
+  final String email;
+  int salary;
+  // User({@required this.uuid, @required this.name, @required this.email});
 
-  int _salary;
-  List<Operation> _operations;
-  int _summForToday;
+  // final Uuid uuid;
+  // String name = "Ulan";
+  // String email;
+  // String _kilo = "Kilo";
 
-  Map<String, dynamic> _obligatoryPayments;
-  Investment _investment;
-  ForARainyDay _forARainyDay;
-  CurrentFreeBalance _currentFreeBalance;
+  // String get kilo{
+  //   return _kilo;
+  // }
 
+  // int _salary;
+  // List<Operation> _operations;
+  // int _summForToday;
 
-  // Email encapsulation
-  String getEmail() => email;
+  // Map<String, dynamic> _obligatoryPayments;
+  // Investment _investment;
+  // ForARainyDay _forARainyDay;
+  // CurrentFreeBalance _currentFreeBalance;
 
-  void setEmail(String email) {
-    email = email;
-  }
+  // //Name get function
+  // String getName() {
+  //   return name;
+  // }
 
-  //Salary encapsulation
-  set setSalary(int newSalary) {
-    _salary = newSalary;
-  }
+  // // Email encapsulation
+  // String getEmail() => email;
 
-  int getSalary() {
-    return _salary;
-  }
+  // void setEmail(String email) {
+  //   email = email;
+  // }
 
-  //SummForToday encapsulation
-  void setSummForToday(int newSummForToday) {
-    _summForToday = newSummForToday;
-  }
+  // //Salary encapsulation
+  // set setSalary(int newSalary) {
+  //   _salary = newSalary;
+  // }
 
-  int getSummForToday() {
-    return _summForToday;
-  }
+  // int getSalary() {
+  //   return _salary;
+  // }
 
-  //Operations encapsulations
-  List<Operation> getOperations() {
-    return _operations;
-  }
+  // //SummForToday encapsulation
+  // void setSummForToday(int newSummForToday) {
+  //   _summForToday = newSummForToday;
+  // }
 
-  void addOperation(Operation operation) {
-    _operations.add(operation);
-  }
+  // int getSummForToday() {
+  //   return _summForToday;
+  // }
 
-  //ObligatoryPayments encapsulation
-  Map<String, dynamic>  getObligatoryPayments() => _obligatoryPayments;
+  // //Operations encapsulations
+  // List<Operation> getOperations() {
+  //   return _operations;
+  // }
 
-  void setObligatoryPayments(Map<String, dynamic> obligatoryPayments) {
-    _obligatoryPayments = obligatoryPayments;
-  }
+  // void addOperation(Operation operation) {
+  //   _operations.add(operation);
+  // }
 
-  //Investment encapsulation
-  Investment getInvestment() => _investment;
+  // //ObligatoryPayments encapsulation
+  // Map<String, dynamic>  getObligatoryPayments() => _obligatoryPayments;
 
-  void setInvestment(Investment investment) {
-    _investment = investment;
-  }
+  // void setObligatoryPayments(Map<String, dynamic> obligatoryPayments) {
+  //   _obligatoryPayments = obligatoryPayments;
+  // }
 
-  //For a rainy day Encapsulation
-  ForARainyDay getForARainyDay() => _forARainyDay;
+  // //Investment encapsulation
+  // Investment getInvestment() => _investment;
 
-  void setForARainyDay(ForARainyDay forARainyDay) {
-    _forARainyDay = forARainyDay;
-  }
+  // void setInvestment(Investment investment) {
+  //   _investment = investment;
+  // }
 
-  //Current balance for use encapsulation
-  CurrentFreeBalance getCurrentFreeBalance() => _currentFreeBalance;
+  // //For a rainy day Encapsulation
+  // ForARainyDay getForARainyDay() => _forARainyDay;
 
-  void setCurrentFreeBalance(CurrentFreeBalance currentFreeBalance) {
-    _currentFreeBalance = currentFreeBalance;
-  }
+  // void setForARainyDay(ForARainyDay forARainyDay) {
+  //   _forARainyDay = forARainyDay;
+  // }
+
+  // //Current balance for use encapsulation
+  // CurrentFreeBalance getCurrentFreeBalance() => _currentFreeBalance;
+
+  // void setCurrentFreeBalance(CurrentFreeBalance currentFreeBalance) {
+  //   _currentFreeBalance = currentFreeBalance;
+  // }
 }
