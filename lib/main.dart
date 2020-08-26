@@ -76,13 +76,14 @@ class ScreenWrapper extends StatelessWidget {
             final User user = snapshot.data;
             if (user == null) {
               return WelcomeScreen();
-            } else if (user != null && user.salary == null) {
-              return ErrorScreen(
-                            msg: "Not have an salary",
-                          );
-            } else {
-              return MainScreenHolder();
             }
+            // else if (user != null && user.salary == null) {
+            //   return ErrorScreen(
+            //                 msg: "Not have an salary",
+            //               );
+            // }
+
+            return MainScreenHolder();
           } else {
             return Center(
               child: Loading(

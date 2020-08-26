@@ -4,10 +4,14 @@ import 'package:finance_manager/screens/ErrorScreen.dart';
 import 'package:finance_manager/screens/MainScreenHolder.dart';
 import 'package:finance_manager/services/AuthService.dart';
 import 'package:finance_manager/services/FirebaseAuthService.dart';
+import 'package:finance_manager/widgets/InputTextFormField.dart';
+import 'package:finance_manager/widgets/SocialAuth.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fAuth;
 import "package:flutter/material.dart";
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+
+import '../services/AuthService.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -74,57 +78,24 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 50.0,
               ),
-              TextFormField(
+              InputTextFormField(
+                fieldName: "email",
+                isObscure: false,
+                fieldType: TextInputType.emailAddress,
                 onChanged: (val) {
                   email = val;
                 },
-                validator: (val) {
-                  if (val.isEmpty) {
-                    return "Введите ваш email!";
-                  }
-                  return null;
-                },
-                keyboardType: TextInputType.emailAddress,
-                // decoration: InputDecoration(
-                //     contentPadding: EdgeInsets.only(
-                //         top: 10.0, bottom: 10.0, left: 30.0, right: 30.0),
-                //     hintText: "Введите еmail",
-                //     hintStyle: kRegularTextStyle.copyWith(
-                //         fontSize: 16.0, color: Colors.white.withOpacity(0.5)),
-                //     enabledBorder: OutlineInputBorder(
-                //         borderRadius: BorderRadius.circular(20.0),
-                //         borderSide: BorderSide(color: Colors.white)),
-                //     focusedBorder: OutlineInputBorder(
-                //         borderRadius: BorderRadius.circular(20.0),
-                //         borderSide: BorderSide(color: Color(0xff2BC773)))),
               ),
               SizedBox(
                 height: 20.0,
               ),
-              TextFormField(
-                obscureText: true,
+              InputTextFormField(
+                fieldName: "пароль",
+                isObscure: true,
+                fieldType: TextInputType.visiblePassword,
                 onChanged: (val) {
                   password = val;
                 },
-                validator: (val) {
-                  if (val.isEmpty) {
-                    return "Введите ваш пароль!";
-                  }
-                  return null;
-                },
-                keyboardType: TextInputType.emailAddress,
-                // decoration: InputDecoration(
-                //     contentPadding: EdgeInsets.only(
-                //         top: 10.0, bottom: 10.0, left: 30.0, right: 30.0),
-                //     hintText: "Пароль",
-                //     hintStyle: kRegularTextStyle.copyWith(
-                //         fontSize: 16.0, color: Colors.white.withOpacity(0.5)),
-                //     enabledBorder: OutlineInputBorder(
-                //         borderRadius: BorderRadius.circular(20.0),
-                //         borderSide: BorderSide(color: Colors.white)),
-                //     focusedBorder: OutlineInputBorder(
-                //         borderRadius: BorderRadius.circular(20.0),
-                //         borderSide: BorderSide(color: Color(0xff2BC773)))),
               ),
               SizedBox(height: 50.0),
               Text("или войдите с помощью",
@@ -133,23 +104,29 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  FlatButton(
-                      onPressed: () {},
-                      child: SvgPicture.asset(
-                        "svg/google.svg",
-                        semanticsLabel: "Google",
-                        width: 40.0,
-                        height: 40.0,
-                      )),
-                  FlatButton(
+                  SocialAuth(
+                    iconPath: "svg/google.svg",
+                    onPressed: () async {
+                      try {
+                        final AuthService service =
+                            Provider.of<AuthService>(context, listen: false);
+                        await service.signInWithGoogle();
+                      } catch (e) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ErrorScreen(
+                                      msg: e.toString(),
+                                    )));
+                      }
+                    },
+                    label: "Google",
+                  ),
+                  SocialAuth(
+                    iconPath: "svg/facebook.svg",
                     onPressed: () {},
-                    child: SvgPicture.asset(
-                      "svg/facebook.svg",
-                      semanticsLabel: "Facebook",
-                      width: 40.0,
-                      height: 40.0,
-                    ),
-                  )
+                    label: "Facebook",
+                  ),
                 ],
               ),
               SizedBox(

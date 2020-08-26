@@ -3,6 +3,8 @@ import 'package:finance_manager/provider/UserProvider.dart';
 import 'package:finance_manager/screens/ErrorScreen.dart';
 import 'package:finance_manager/screens/MainScreenHolder.dart';
 import 'package:finance_manager/services/AuthService.dart';
+import 'package:finance_manager/widgets/InputTextFormField.dart';
+import 'package:finance_manager/widgets/SocialAuth.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_svg/flutter_svg.dart';
 // import "package:firebase_auth/firebase_auth.dart";
@@ -19,12 +21,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String email;
   String password;
 
-  void registerWithEmailAndPassword(BuildContext context, String userEmail, String userPassword) async {
+  void registerWithEmailAndPassword(
+      BuildContext context, String userEmail, String userPassword) async {
     try {
       final AuthService authService =
           Provider.of<AuthService>(context, listen: false);
-      dynamic user =
-          await authService.createUserWithEmailAndPassword(userEmail, userPassword);
+      dynamic user = await authService.createUserWithEmailAndPassword(
+          userEmail, userPassword);
       if (user != null) {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => MainScreenHolder()));
@@ -68,84 +71,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 SizedBox(
                   height: 50.0,
                 ),
-                TextFormField(
+                InputTextFormField(
+                  fieldName: "name",
+                  fieldType: TextInputType.name,
                   onChanged: (val) {
                     name = val;
                   },
-                  validator: (val) {
-                    if (val.isEmpty) {
-                      return "Введите ваше имя!";
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                  // decoration: InputDecoration(
-                  //     contentPadding: EdgeInsets.only(
-                  //         top: 10.0, bottom: 10.0, left: 30.0, right: 30.0),
-                  //     hintText: "Введите имя",
-                  //     hintStyle: kRegularTextStyle.copyWith(
-                  //         fontSize: 16.0, color: Colors.white.withOpacity(0.5)),
-                  //     enabledBorder: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.circular(20.0),
-                  //         borderSide: BorderSide(color: Colors.white)),
-                  //     focusedBorder: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.circular(20.0),
-                  //         borderSide: BorderSide(color: Color(0xff2BC773)))),
                 ),
                 SizedBox(
                   height: 20.0,
                 ),
-                TextFormField(
+                InputTextFormField(
+                  fieldName: "email",
+                  fieldType: TextInputType.emailAddress,
                   onChanged: (val) {
                     email = val;
                   },
-                  validator: (val) {
-                    if (val.isEmpty) {
-                      return "Введите ваш email!";
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                  // decoration: InputDecoration(
-                  //     contentPadding: EdgeInsets.only(
-                  //         top: 10.0, bottom: 10.0, left: 30.0, right: 30.0),
-                  //     hintText: "Введите email",
-                  //     hintStyle: kRegularTextStyle.copyWith(
-                  //         fontSize: 16.0, color: Colors.white.withOpacity(0.5)),
-                  //     enabledBorder: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.circular(20.0),
-                  //         borderSide: BorderSide(color: Colors.white)),
-                  //     focusedBorder: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.circular(20.0),
-                  //         borderSide: BorderSide(color: Color(0xff2BC773)))),
                 ),
                 SizedBox(
                   height: 20.0,
                 ),
-                TextFormField(
-                  obscureText: true,
+                InputTextFormField(
+                  fieldName: "password",
+                  fieldType: TextInputType.visiblePassword,
                   onChanged: (val) {
                     password = val;
                   },
-                  validator: (val) {
-                    if (val.isEmpty) {
-                      return "Введите ваш пароль!";
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                  // decoration: InputDecoration(
-                  //     contentPadding: EdgeInsets.only(
-                  //         top: 10.0, bottom: 10.0, left: 30.0, right: 30.0),
-                  //     hintText: "Придумайте пароль",
-                  //     hintStyle: kRegularTextStyle.copyWith(
-                  //         fontSize: 16.0, color: Colors.white.withOpacity(0.5)),
-                  //     enabledBorder: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.circular(20.0),
-                  //         borderSide: BorderSide(color: Colors.white)),
-                  //     focusedBorder: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.circular(20.0),
-                  //         borderSide: BorderSide(color: Color(0xff2BC773)))),
                 ),
                 SizedBox(height: 50.0),
                 Text("или зарегистрироваться с помощью",
@@ -154,37 +105,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    FlatButton(
+                    SocialAuth(
+                      iconPath: "svg/google.svg",
                       onPressed: () {},
-                      child: SvgPicture.asset(
-                        "svg/google.svg",
-                        semanticsLabel: "Google",
-                        width: 40.0,
-                        height: 40.0,
-                      )
+                      label: "Google",
                     ),
-                    FlatButton(
+                    SocialAuth(
+                      iconPath: "svg/facebook.svg",
                       onPressed: () {},
-                      child: SvgPicture.asset(
-                        "svg/facebook.svg",
-                        semanticsLabel: "Facebook",
-                        width: 40.0,
-                        height: 40.0,
-                      ),
-                    )
+                      label: "Facebook",
+                    ),
                   ],
                 ),
-                SizedBox(height: 50.0,),
+                SizedBox(
+                  height: 50.0,
+                ),
                 Row(
                   children: [
                     Expanded(
                       child: RaisedButton(
                         onPressed: () async {
-                          await registerWithEmailAndPassword(context, email, password);
+                          await registerWithEmailAndPassword(
+                              context, email, password);
                         },
                         padding: EdgeInsets.only(top: 22.0, bottom: 22.0),
                         color: kGreenColor,
-                        child: Text("Зарегистрироваться", style: kRegularTextStyle),
+                        child: Text("Зарегистрироваться",
+                            style: kRegularTextStyle),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40.0),
                         ),
