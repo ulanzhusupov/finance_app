@@ -1,5 +1,6 @@
 import 'package:finance_manager/model/User.dart';
 import 'package:finance_manager/provider/UserProvider.dart';
+import 'package:finance_manager/screens/AddInformationScreen.dart';
 import 'package:finance_manager/screens/AddOperationScreen.dart';
 import 'package:finance_manager/screens/ErrorScreen.dart';
 import 'package:finance_manager/screens/HomeScreen.dart';
@@ -77,11 +78,9 @@ class ScreenWrapper extends StatelessWidget {
             if (user == null) {
               return WelcomeScreen();
             }
-            // else if (user != null && user.salary == null) {
-            //   return ErrorScreen(
-            //                 msg: "Not have an salary",
-            //               );
-            // }
+            else if (user != null && user.salary == null) {
+              return AddInformationScreen();
+            }
 
             return MainScreenHolder();
           } else {
