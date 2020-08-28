@@ -1,4 +1,5 @@
 import 'package:finance_manager/constants.dart';
+import 'package:finance_manager/services/TextFieldControllerFactory.dart';
 import "package:flutter/material.dart";
 
 class AddInformationScreen extends StatefulWidget {
@@ -7,10 +8,17 @@ class AddInformationScreen extends StatefulWidget {
 }
 
 class _AddInformationScreenState extends State<AddInformationScreen> {
-  int salary;
-  Map<String, int> obligators = {};
+  double salary;
+  final Map<String, int> obligatorMap = {};
+  TextFieldControllerFactory myController;
   String obligatorName;
   int obligatorSumm;
+
+  //Send this to database
+  int investment;
+  int allObligatorsSumm;
+  int toRainyDays;
+  double balanceAfterAll;
 
   void handleChangeSalary(val) {
     setState(() {
@@ -24,12 +32,13 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
     });
   }
   void handleChangeObligatorSumm(val) {
-    if(obligators.containsKey(obligatorName)) {
-      
-       obligatorSumm = val;
-       obligators.update(obligatorName, (v) => val);
-      } else {
-      obligators.putIfAbsent(obligatorName, () => 0);
+    if(obligatorMap.containsKey(obligatorName)) {
+      setState(() {
+        obligatorSumm = num.parse(myController.getController().text);
+        obligatorMap.update(obligatorName, (value) => obligatorSumm);
+      });
+    } else {
+      obligatorMap[obligatorName] = 0;
     }
   }
 
@@ -44,7 +53,8 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
   }
 
   void addNewPayment() {
-    print(obligators);
+    myController = TextFieldControllerFactory(controller: new TextEditingController());
+
     Row newPayment = Row(
       children: [
         Expanded(
@@ -63,6 +73,7 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
           width: 100.0,
           padding: EdgeInsets.only(left: 20.0),
           child: TextField(
+            controller: myController.getController(),
             onChanged: handleChangeObligatorSumm,
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
@@ -78,6 +89,31 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
     setState(() {
       payments.add(newPayment);
     });
+    
+  }
+
+  String getObligatorsSumm() {
+    try {
+      for(int x in obligatorMap.values) {
+        // allObligatorsSumm += x;
+      }
+    } catch(e) {
+      print(e);
+    }
+
+    return allObligatorsSumm.toString();
+  }
+
+  String getBalance() {
+    double toInvest = salary * 0.1;
+    salary = salary - toInvest;
+    salary -= allObligatorsSumm;
+
+    double toBadDay = salary * 0.05;
+    salary -= toBadDay;
+    balanceAfterAll = salary;
+
+    return balanceAfterAll.toString();
   }
 
   @override
@@ -174,7 +210,7 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
                       "Обязательные платежи",
                       style: kRegularTextStyle.copyWith(color: Colors.black),
                     ),
-                    trailing: Text("-26000₽",
+                    trailing: Text("-${getObligatorsSumm()}",
                         style: kRegularTextStyle.copyWith(
                             color: Colors.black, fontWeight: FontWeight.bold)),
                   ),
@@ -184,6 +220,15 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
                       style: kRegularTextStyle.copyWith(color: Colors.black),
                     ),
                     trailing: Text("-5%",
+                        style: kRegularTextStyle.copyWith(
+                            color: Colors.black, fontWeight: FontWeight.bold)),
+                  ),
+                  ListTile(
+                    title: Text(
+                      "Остаток",
+                      style: kRegularTextStyle.copyWith(color: Colors.black),
+                    ),
+                    trailing: Text("getBalance()",
                         style: kRegularTextStyle.copyWith(
                             color: Colors.black, fontWeight: FontWeight.bold)),
                   ),
