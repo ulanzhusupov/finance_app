@@ -25,44 +25,29 @@ import "package:firebase_core/firebase_core.dart";
 
 import 'constants.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: Firebase.initializeApp(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return ErrorScreen();
-          }
-
-          if (snapshot.connectionState == ConnectionState.done) {
-            return Provider<AuthService>(
-              create: (_) => FirebaseAuthService(),
-              child: MaterialApp(
-                title: 'Flutter Demo',
-                debugShowCheckedModeBanner: false,
-                theme: ThemeData(
-                  primaryColor: Color(0xff2BC773),
-                  accentColor: Color(0xffFB3B3B),
-                  // scaffoldBackgroundColor: Colors.blue[800],
-                  visualDensity: VisualDensity.adaptivePlatformDensity,
-                ),
-                home: ScreenWrapper(),
-              ),
-            );
-          }
-
-          return Center(
-            child: Loading(
-              indicator: BallScaleIndicator(),
-              size: 50.0,
-            ),
-          );
-        });
+    return Provider<AuthService>(
+      create: (_) => FirebaseAuthService(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primaryColor: Color(0xff2BC773),
+          accentColor: Color(0xffFB3B3B),
+          // scaffoldBackgroundColor: Colors.blue[800],
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: ScreenWrapper(),
+      ),
+    );
   }
 }
 
@@ -77,8 +62,7 @@ class ScreenWrapper extends StatelessWidget {
             final User user = snapshot.data;
             if (user == null) {
               return WelcomeScreen();
-            }
-            else if (user != null && user.salary == null) {
+            } else if (user != null && user.salary == null) {
               return AddInformationScreen();
             }
 

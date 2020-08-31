@@ -2,9 +2,9 @@ import "package:flutter/material.dart";
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SocialAuth extends StatelessWidget {
-  String iconPath;
-  String label;
-  Function onPressed;
+  final String iconPath;
+  final String label;
+  final Function onPressed;
   SocialAuth({@required this.iconPath, this.label, @required this.onPressed});
 
   @override

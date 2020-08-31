@@ -1,4 +1,6 @@
 import 'package:finance_manager/constants.dart';
+import 'package:finance_manager/model/ObligatorFactory.dart';
+import 'package:finance_manager/model/ObligatorPayment.dart';
 import 'package:finance_manager/services/TextFieldControllerFactory.dart';
 import "package:flutter/material.dart";
 
@@ -8,38 +10,22 @@ class AddInformationScreen extends StatefulWidget {
 }
 
 class _AddInformationScreenState extends State<AddInformationScreen> {
-  double salary;
-  final Map<String, int> obligatorMap = {};
+  // final _formkey = GlobalKey<FormState>();
+  final List<ObligatorPayment> obligatorsList = [];
   TextFieldControllerFactory myController;
-  String obligatorName;
-  int obligatorSumm;
+  ObligatorFactory myObligator;
+  double salary = 0.0;
 
   //Send this to database
-  int investment;
-  int allObligatorsSumm;
-  int toRainyDays;
-  double balanceAfterAll;
+  int investment = 0;
+  double allObligatorsSumm = 0.0;
+  int toRainyDays = 0;
+  double balanceAfterAll = 0.0;
 
   void handleChangeSalary(val) {
     setState(() {
       salary = val;
     });
-  }
-
-  void handleChangeObligatorName(val) {
-    setState(() {
-      obligatorName = val;
-    });
-  }
-  void handleChangeObligatorSumm(val) {
-    if(obligatorMap.containsKey(obligatorName)) {
-      setState(() {
-        obligatorSumm = num.parse(myController.getController().text);
-        obligatorMap.update(obligatorName, (value) => obligatorSumm);
-      });
-    } else {
-      obligatorMap[obligatorName] = 0;
-    }
   }
 
   List<Widget> payments = [];
@@ -52,56 +38,18 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
     });
   }
 
-  void addNewPayment() {
-    myController = TextFieldControllerFactory(controller: new TextEditingController());
-
-    Row newPayment = Row(
-      children: [
-        Expanded(
-          child: TextField(
-            onChanged: handleChangeObligatorName,
-            keyboardType: TextInputType.name,
-            decoration: InputDecoration(
-              hintText: "За квартиру",
-              hintStyle: kRegularTextStyle
-                  .copyWith(color: Colors.black)
-                  .copyWith(color: Colors.grey),
-            ),
-          ),
-        ),
-        Container(
-          width: 100.0,
-          padding: EdgeInsets.only(left: 20.0),
-          child: TextField(
-            controller: myController.getController(),
-            onChanged: handleChangeObligatorSumm,
-            keyboardType: TextInputType.number,
-            textAlign: TextAlign.center,
-            decoration: InputDecoration(
-                hintText: "25000",
-                hintStyle: kRegularTextStyle
-                    .copyWith(color: Colors.black)
-                    .copyWith(color: Colors.grey)),
-          ),
-        )
-      ],
-    );
-    setState(() {
-      payments.add(newPayment);
-    });
-    
-  }
-
-  String getObligatorsSumm() {
+  void getObligatorsSumm() {
     try {
-      for(int x in obligatorMap.values) {
-        // allObligatorsSumm += x;
+      for (int i = 0; i < obligatorsList.length; i++) {
+        if (obligatorsList[i].getSumm() != null) {
+          double x = obligatorsList[i].getSumm();
+          allObligatorsSumm = allObligatorsSumm + x;
+          print(allObligatorsSumm);
+        }
       }
-    } catch(e) {
+    } catch (e) {
       print(e);
     }
-
-    return allObligatorsSumm.toString();
   }
 
   String getBalance() {
@@ -144,42 +92,31 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
                     keyboardType: TextInputType.number,
                     style: kEnterSummOnAdd,
                     decoration: InputDecoration(
-                      hintText: "100000",
-                      hintStyle: kEnterSummOnAdd.copyWith(
-                        color: Colors.grey
-                      ),
-                      prefixText: "₽",
-                      prefixStyle: kEnterSummOnAdd.copyWith(
-                        color: Colors.grey
-                      )
-                    ),
+                        hintText: "100000",
+                        hintStyle: kEnterSummOnAdd.copyWith(color: Colors.grey),
+                        prefixText: "₽",
+                        prefixStyle:
+                            kEnterSummOnAdd.copyWith(color: Colors.grey)),
                   ),
                   SizedBox(
                     height: 20.0,
                   ),
-                  Text("Добавьте обязательные платежи:",
+                  Text("Введите общую сумму обязательных платежей:",
                       style: kSemiBoldTextStyle),
-                  Column(
-                    children: payments,
-                  ),
-                  // getPayments(),
-                  Row(
-                    children: [
-                      OutlineButton(
-                        onPressed: () {
-                          addNewPayment();
-                        },
-                        color: Colors.lightBlueAccent,
-                        child: Icon(Icons.add),
-                      ),
-                      OutlineButton(
-                        onPressed: () {
-                          deletePayment();
-                        },
-                        color: Colors.lightBlueAccent,
-                        child: Icon(Icons.delete_outline),
-                      ),
-                    ],
+                  TextField(
+                    onChanged: (val) {
+                      setState(() {
+                        allObligatorsSumm = double.parse(val);
+                        getObligatorsSumm();
+                      });
+                    },
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      hintText: "30000",
+                      hintStyle: kRegularTextStyle
+                          .copyWith(color: Colors.black)
+                          .copyWith(color: Colors.grey),
+                    ),
                   ),
                   SizedBox(height: 20.0),
                   Text("Итого:", style: kSemiBoldTextStyle),
@@ -210,7 +147,7 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
                       "Обязательные платежи",
                       style: kRegularTextStyle.copyWith(color: Colors.black),
                     ),
-                    trailing: Text("-${getObligatorsSumm()}",
+                    trailing: Text("-${allObligatorsSumm}₽",
                         style: kRegularTextStyle.copyWith(
                             color: Colors.black, fontWeight: FontWeight.bold)),
                   ),
@@ -228,7 +165,7 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
                       "Остаток",
                       style: kRegularTextStyle.copyWith(color: Colors.black),
                     ),
-                    trailing: Text("getBalance()",
+                    trailing: Text("${getBalance()}₽",
                         style: kRegularTextStyle.copyWith(
                             color: Colors.black, fontWeight: FontWeight.bold)),
                   ),
@@ -241,7 +178,10 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
                         child: RaisedButton(
                           onPressed: () {},
                           color: Color(0xffFB3B3B),
-                          child: Text("Добавить", style: kRegularTextStyle,),
+                          child: Text(
+                            "Добавить",
+                            style: kRegularTextStyle,
+                          ),
                         ),
                       ),
                     ],
