@@ -1,14 +1,11 @@
 import 'package:finance_manager/constants.dart';
-import 'package:finance_manager/provider/UserProvider.dart';
+import 'package:finance_manager/screens/AddInformationScreen.dart';
 import 'package:finance_manager/screens/ErrorScreen.dart';
 import 'package:finance_manager/screens/MainScreenHolder.dart';
 import 'package:finance_manager/services/AuthService.dart';
-import 'package:finance_manager/services/FirebaseAuthService.dart';
 import 'package:finance_manager/widgets/InputTextFormField.dart';
 import 'package:finance_manager/widgets/SocialAuth.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fAuth;
 import "package:flutter/material.dart";
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../services/AuthService.dart';
@@ -30,16 +27,14 @@ class _LoginScreenState extends State<LoginScreen> {
           Provider.of<AuthService>(context, listen: false);
       dynamic user =
           await authService.signInWithEmailAndPassword(userEmail, userPassword);
-      if (user != null) {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => MainScreenHolder()));
-      } else if (user != null && user.salary == null) {
+      if (user != null && user.salary == null) {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ErrorScreen(
-                      msg: "Not have salary",
-                    )));
+                builder: (context) => AddInformationScreen()));
+      } else {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => MainScreenHolder()));
       }
     } catch (e) {
       // print("#### error: " + e.toString());

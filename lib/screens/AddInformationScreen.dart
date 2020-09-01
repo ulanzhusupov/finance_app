@@ -1,8 +1,12 @@
 import 'package:finance_manager/constants.dart';
 import 'package:finance_manager/model/ObligatorFactory.dart';
 import 'package:finance_manager/model/ObligatorPayment.dart';
+import 'package:finance_manager/screens/ErrorScreen.dart';
+import 'package:finance_manager/services/DBService.dart';
+import 'package:finance_manager/services/FirebaseDBService.dart';
 import 'package:finance_manager/services/TextFieldControllerFactory.dart';
 import "package:flutter/material.dart";
+import 'package:provider/provider.dart';
 
 class AddInformationScreen extends StatefulWidget {
   @override
@@ -17,16 +21,10 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
   double salary = 0.0;
 
   //Send this to database
-  int investment = 0;
+  double forInvestment = 0;
+  double forRainyDays = 0;
   double allObligatorsSumm = 0.0;
-  int toRainyDays = 0;
   double balanceAfterAll = 0.0;
-
-  void handleChangeSalary(val) {
-    setState(() {
-      salary = val;
-    });
-  }
 
   List<Widget> payments = [];
 
@@ -53,13 +51,12 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
   }
 
   String getBalance() {
-    double toInvest = salary * 0.1;
-    salary = salary - toInvest;
-    salary -= allObligatorsSumm;
+    forInvestment = salary * 0.1;
+    balanceAfterAll = salary - forInvestment;
+    balanceAfterAll -= allObligatorsSumm;
 
-    double toBadDay = salary * 0.05;
-    salary -= toBadDay;
-    balanceAfterAll = salary;
+    forRainyDays = salary * 0.05;
+    balanceAfterAll -= forRainyDays;
 
     return balanceAfterAll.toString();
   }
@@ -73,7 +70,7 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
             pinned: true,
             expandedHeight: 150.0,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text("Добавить информацию", style: kAppBarText),
+              title: Text("Добавьте информацию", style: kAppBarText),
             ),
           ),
           SliverToBoxAdapter(
@@ -88,7 +85,12 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
                     style: kSemiBoldTextStyle,
                   ),
                   TextField(
-                    onChanged: handleChangeSalary,
+                    onChanged: (val) {
+                      setState(() {
+                        salary = double.parse(val);
+                        getBalance();
+                      });
+                    },
                     keyboardType: TextInputType.number,
                     style: kEnterSummOnAdd,
                     decoration: InputDecoration(
@@ -107,7 +109,7 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
                     onChanged: (val) {
                       setState(() {
                         allObligatorsSumm = double.parse(val);
-                        getObligatorsSumm();
+                        getBalance();
                       });
                     },
                     keyboardType: TextInputType.number,
@@ -125,7 +127,7 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
                       "Ваша зарплата",
                       style: kRegularTextStyle.copyWith(color: Colors.black),
                     ),
-                    trailing: Text("${salary != null ? salary : '0'}₽",
+                    trailing: Text("$salary₽",
                         style: kRegularTextStyle.copyWith(
                             color: Colors.black, fontWeight: FontWeight.bold)),
                   ),
@@ -135,10 +137,10 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
                       style: kRegularTextStyle.copyWith(color: Colors.black),
                     ),
                     subtitle: Text(
-                      "Будет вычитаться первым",
+                      "10% на инвестиции",
                       style: kRegularTextStyle.copyWith(color: Colors.grey),
                     ),
-                    trailing: Text("-10%",
+                    trailing: Text("$forInvestment₽",
                         style: kRegularTextStyle.copyWith(
                             color: Colors.black, fontWeight: FontWeight.bold)),
                   ),
@@ -156,7 +158,11 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
                       "На черный день",
                       style: kRegularTextStyle.copyWith(color: Colors.black),
                     ),
-                    trailing: Text("-5%",
+                    subtitle: Text(
+                      "5% на черный день",
+                      style: kRegularTextStyle.copyWith(color: Colors.grey),
+                    ),
+                    trailing: Text("$forRainyDays₽",
                         style: kRegularTextStyle.copyWith(
                             color: Colors.black, fontWeight: FontWeight.bold)),
                   ),
@@ -165,7 +171,7 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
                       "Остаток",
                       style: kRegularTextStyle.copyWith(color: Colors.black),
                     ),
-                    trailing: Text("${getBalance()}₽",
+                    trailing: Text("$balanceAfterAll₽",
                         style: kRegularTextStyle.copyWith(
                             color: Colors.black, fontWeight: FontWeight.bold)),
                   ),
@@ -176,7 +182,26 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
                     children: [
                       Expanded(
                         child: RaisedButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            try {
+                              final DBService service =
+                                  Provider.of<FirebaseDBService>(context,
+                                      listen: false);
+                              await service.initializeUserInfo(
+                                  salary,
+                                  forInvestment,
+                                  allObligatorsSumm,
+                                  forRainyDays,
+                                  balanceAfterAll);
+                            } catch (e) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ErrorScreen(
+                                            msg: e.toString(),
+                                          )));
+                            }
+                          },
                           color: Color(0xffFB3B3B),
                           child: Text(
                             "Добавить",

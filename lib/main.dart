@@ -11,7 +11,9 @@ import 'package:finance_manager/screens/RegisterScreen.dart';
 import 'package:finance_manager/screens/WalletScreen.dart';
 import 'package:finance_manager/screens/WelcomeScreen.dart';
 import 'package:finance_manager/services/AuthService.dart';
+import 'package:finance_manager/services/DBService.dart';
 import 'package:finance_manager/services/FirebaseAuthService.dart';
+import 'package:finance_manager/services/FirebaseDBService.dart';
 import 'package:finance_manager/widgets/OperationList.dart';
 import 'package:finance_manager/widgets/WalletCards.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fAuth;
@@ -34,8 +36,12 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Provider<AuthService>(
-      create: (_) => FirebaseAuthService(),
+    return MultiProvider(
+      providers: [
+        Provider<AuthService>(create: (_) => FirebaseAuthService(),),
+        Provider<DBService>(create: (_) => FirebaseDBService(),)
+      ],
+      
       child: MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
@@ -64,9 +70,11 @@ class ScreenWrapper extends StatelessWidget {
               return WelcomeScreen();
             } else if (user != null && user.salary == null) {
               return AddInformationScreen();
+            } else {
+              return MainScreenHolder();
+
             }
 
-            return MainScreenHolder();
           } else {
             return Center(
               child: Loading(

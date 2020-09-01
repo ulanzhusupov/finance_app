@@ -1,7 +1,6 @@
 import "dart:async";
 
 import 'package:finance_manager/model/User.dart';
-import 'package:flutter/cupertino.dart';
 
 // class User {
 //   const User({@required this.uid, this.email});
@@ -10,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 //   final String email;
 // }
 
-abstract class AuthService {
+abstract class AuthService  {
   Future<User> currentUser();
   Future<User> signInWithEmailAndPassword(String email, String password);
   Future<User> createUserWithEmailAndPassword(String email, String password);
