@@ -10,16 +10,7 @@ class OperationList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
-        Card(
-          child: ListTile(
-            title: Text("Еда", style: kSemiBoldTextStyle,),
-            subtitle: Text("В доме не осталось еды", ),
-            trailing: Text(
-              "-312 Р",
-              style: kSemiBoldTextStyle),
-            ),
-            
-        ),
+        
         Card(
           child: ListTile(
             title: Text("Еда", style: kSemiBoldTextStyle,),

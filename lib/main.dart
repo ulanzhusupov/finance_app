@@ -30,16 +30,27 @@ import 'constants.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(MyApp(
+    authService: (_) => FirebaseAuthService(),
+    databaseService: (_) => FirebaseDBService(),
+    userProvider: (_) => UserProvider(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
+  final FirebaseAuthService Function(BuildContext context) authService;
+  final FirebaseDBService Function(BuildContext context) databaseService;
+  final UserProvider Function(BuildContext context) userProvider;
+
+  MyApp({Key key, this.authService, this.databaseService, this.userProvider}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<AuthService>(create: (_) => FirebaseAuthService(),),
-        Provider<DBService>(create: (_) => FirebaseDBService(),)
+        Provider<AuthService>(create: authService,),
+        Provider<FirebaseDBService>(create: databaseService,),
+        ChangeNotifierProvider<UserProvider>(create: userProvider)
       ],
       
       child: MaterialApp(
@@ -66,14 +77,19 @@ class ScreenWrapper extends StatelessWidget {
         builder: (_, AsyncSnapshot<User> snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             final User user = snapshot.data;
+            print("#### This is uid: "+user.uid);
+            double userSalary = Provider.of<UserProvider>(context).salary;
+
             if (user == null) {
               return WelcomeScreen();
-            } else if (user != null && user.salary == null) {
+            } else if (user != null && userSalary == null) {
+              Provider.of<UserProvider>(context).setUid(user.uid);
               return AddInformationScreen();
             } else {
+              Provider.of<UserProvider>(context).setUid(user.uid);
               return MainScreenHolder();
-
             }
+
 
           } else {
             return Center(

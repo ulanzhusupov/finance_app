@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
       dynamic user =
           await authService.signInWithEmailAndPassword(userEmail, userPassword);
       if (user != null && user.salary == null) {
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (context) => AddInformationScreen()));

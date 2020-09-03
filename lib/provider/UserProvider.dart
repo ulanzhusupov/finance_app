@@ -4,48 +4,73 @@ import 'package:finance_manager/model/Operation.dart';
 import 'package:finance_manager/model/User.dart';
 import 'package:flutter/cupertino.dart';
 
-// class UserProvider extends ChangeNotifier {
-//   User currentUser;
-//   String _name;
-//   bool _isUserOnline = false;
+class UserProvider extends ChangeNotifier {
+  String uid;
+  double salary;
+  double balance;
+  double forObligators;
+  double forInvestment;
+  double forRainyDays;
+  double balanceForEveryDay;
+  double balanceForToday;
+  double balanceForTomorrow;
+  double balanceForYesterday;
 
-//   String get name{
-//     return _name;
-//   }
-  
-//   void addOperation(Operation operation) {
-//     currentUser.addOperation(operation);
-//   }
+  UserProvider({
+    this.salary,
+    this.forObligators,
+    this.forInvestment,
+    this.forRainyDays,
+    this.balanceForEveryDay
+  });
 
-//   void setInvesting(int percent) {
-//     int currentUserSalary = currentUser.getSalary();
-//     double summPermonth = currentUserSalary * (percent/100);
-//     final investing = Investment(percent: percent, summPerMonth: summPermonth);
-//     currentUser.setInvestment(investing);
-//   }
+  void setUid(String uid) {
+    this.uid = uid;
+    notifyListeners();
+  }
 
-//   void setObligators(String payment, int summ) {
-//     Map<String, dynamic> currentPayments = currentUser.getObligatoryPayments();
+  void setBalance(double balance) {
+    this.balance = balance;
+    notifyListeners();
+  }
 
-//     currentPayments.putIfAbsent(payment, () => summ);
+  void setSalary(double salary) {
+    this.salary = salary;
+    notifyListeners();
+  }
 
-//     currentUser.setObligatoryPayments(currentPayments);
-//   }
+  void setForObligators(double obligator) {
+    this.forObligators = obligator;
+    notifyListeners();
+  }
 
-//   void setForARainyDay(int percent) {
-//     // final investings = currentUser.getInvestment();
-//     // final obligatoryPayments = currentUser.getObligatoryPayments();
+  void setForInvestment(double investment) {
+    this.forInvestment = investment;
+    notifyListeners();
+  }
 
-//     // ForARainyDay forARainyDay = ForARainyDay(percent: percent, );
-//     // currentUser.setForARainyDay(forARainyDay);
-//   }
+  void setForRainyDays(double forRainyDays) {
+    this.forRainyDays = forRainyDays;
+    notifyListeners();
+  }
 
-//   //Is user online
-//   bool get isUserOnline {
-//     return _isUserOnline;
-//   }
-//   void setIsUserOnline(bool val) {
-//     _isUserOnline = val;
-//     notifyListeners();
-//   }
-// }
+  void setBalanceForEveryDay(double balanceForEveryDay) {
+    this.balanceForEveryDay = balanceForEveryDay;
+    notifyListeners();
+  }
+
+  void setBalanceForToday(double balanceForToday) {
+    this.balanceForToday = balanceForToday;
+    notifyListeners();
+  }
+
+  void setBalanceForTomorrow(double balanceForTomorrow) {
+    this.balanceForTomorrow = balanceForTomorrow;
+    notifyListeners();
+  }
+
+  void setBalanceForYesterday(double balanceForYesterday) {
+    this.balanceForYesterday = balanceForYesterday;
+    notifyListeners();
+  }
+}

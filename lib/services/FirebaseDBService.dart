@@ -9,21 +9,20 @@ class FirebaseDBService extends DBService {
         FirebaseFirestore.instance.collection('users');
 
   @override
-  Future<void> initializeUserInfo(double salary, double forInvestment, double obligatorPayments, double forRainyDays, double balance) {
-    var currentDate = DateTime.now();
-    var thisMonth = Utils.lastDayOfMonth(currentDate);
-    print("### days"+thisMonth.toString());
+  Future<void> initializeUserInfo(String uid, double salary, double forInvestment, double obligatorPayments, double forRainyDays, double balance) async {
+
     double dayBalance = (balance / 30);
     
-    // query.add({
-    //   'salary': salary,
-    //   'forInvestment': forInvestment,
-    //   'obligatorPayments': obligatorPayments,
-    //   'forRainyDays': forRainyDays,
-    //   'balance': balance,
-    //   'balanceForEveryDay': 0.0,
-    //   'balanceForToday': 
-    // });
+    await query.doc(uid).set({
+      'salary': salary,
+      'forInvestment': forInvestment,
+      'obligatorPayments': obligatorPayments,
+      'forRainyDays': forRainyDays,
+      'balance': balance,
+      'balanceForEveryDay': dayBalance.floor(),
+      'balanceForToday': dayBalance.floor(),
+      'balanceForTomorrow': dayBalance.floor()
+    });
   }
 
 }

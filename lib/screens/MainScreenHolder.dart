@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance_manager/constants.dart';
+import 'package:finance_manager/provider/UserProvider.dart';
 import 'package:finance_manager/screens/AddOperationScreen.dart';
 import 'package:finance_manager/screens/ErrorScreen.dart';
 import 'package:finance_manager/screens/HomeScreen.dart';
@@ -7,13 +9,50 @@ import 'package:finance_manager/screens/WalletScreen.dart';
 import 'package:finance_manager/services/AuthService.dart';
 import 'package:finance_manager/services/FirebaseAuthService.dart';
 import "package:flutter/material.dart";
+import 'package:loading/indicator/ball_pulse_indicator.dart';
+import 'package:loading/loading.dart';
 import 'package:provider/provider.dart';
 
 class MainScreenHolder extends StatelessWidget {
-  const MainScreenHolder({
-    Key key,
-  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final String uid = Provider.of<UserProvider>(context).uid;
+    CollectionReference users = FirebaseFirestore.instance.collection("users");
 
+    return FutureBuilder<DocumentSnapshot>(
+      future: users.doc(uid).get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text(snapshot.error);
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          Map<String, dynamic> data = snapshot.data.data();
+          
+          Provider.of<UserProvider>(context, listen: false).setSalary(data['salary'].toDouble());
+          Provider.of<UserProvider>(context, listen: false).setBalance(data['balance'].toDouble());
+          Provider.of<UserProvider>(context, listen: false).setForInvestment(data['forInvestment'].toDouble());
+          Provider.of<UserProvider>(context, listen: false).setForObligators(data['obligatorPayments'].toDouble());
+          Provider.of<UserProvider>(context, listen: false).setForRainyDays(data['forRainyDays'].toDouble());
+          Provider.of<UserProvider>(context, listen: false).setBalanceForEveryDay(data['balanceForEveryDay'].toDouble());
+          Provider.of<UserProvider>(context, listen: false).setBalanceForToday(data['balanceForToday'].toDouble());
+          Provider.of<UserProvider>(context, listen: false).setBalanceForTomorrow(data['balanceForTomorrow'].toDouble());
+          return ScreenTabsCustom();
+        }
+
+        return Center(
+          child: Loading(
+            indicator: BallPulseIndicator(),
+            size: 100.0,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class ScreenTabsCustom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -26,12 +65,13 @@ class MainScreenHolder extends StatelessWidget {
                 child: Text("logout"),
                 onPressed: () async {
                   try {
-                    final AuthService authService = Provider.of<AuthService>(context, listen: false);
+                    final AuthService authService =
+                        Provider.of<AuthService>(context, listen: false);
                     await authService.signOut();
-                  } catch(e) {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ErrorScreen()));
+                  } catch (e) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ErrorScreen()));
                   }
-                  
                 })
           ],
         ),

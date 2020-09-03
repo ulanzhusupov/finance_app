@@ -1,7 +1,9 @@
 import 'package:finance_manager/constants.dart';
 import 'package:finance_manager/model/ObligatorFactory.dart';
 import 'package:finance_manager/model/ObligatorPayment.dart';
+import 'package:finance_manager/provider/UserProvider.dart';
 import 'package:finance_manager/screens/ErrorScreen.dart';
+import 'package:finance_manager/screens/MainScreenHolder.dart';
 import 'package:finance_manager/services/DBService.dart';
 import 'package:finance_manager/services/FirebaseDBService.dart';
 import 'package:finance_manager/services/TextFieldControllerFactory.dart';
@@ -59,6 +61,38 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
     balanceAfterAll -= forRainyDays;
 
     return balanceAfterAll.toString();
+  }
+
+  void pushInformation() async {
+    try {
+      final DBService service =
+          Provider.of<FirebaseDBService>(context, listen: false);
+      String uid = Provider.of<UserProvider>(context, listen: false).uid;
+      
+      await service.initializeUserInfo(uid, salary, forInvestment, allObligatorsSumm,
+          forRainyDays, balanceAfterAll);
+      
+      double dayBalance = (balanceAfterAll / 30);
+
+      Provider.of<UserProvider>(context, listen: false).setSalary(salary);
+      // Provider.of<UserProvider>(context).setForInvestment(forInvestment);
+      // Provider.of<UserProvider>(context).setForObligators(allObligatorsSumm);
+      // Provider.of<UserProvider>(context).setForRainyDays(forRainyDays);
+      // Provider.of<UserProvider>(context).setBalanceForEveryDay(dayBalance.floorToDouble());
+      // Provider.of<UserProvider>(context).setBalanceForToday(dayBalance.floorToDouble());
+      // Provider.of<UserProvider>(context).setBalanceForTomorrow(dayBalance.floorToDouble());
+
+
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => MainScreenHolder()));
+    } catch (e) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ErrorScreen(
+                    msg: e.toString(),
+                  )));
+    }
   }
 
   @override
@@ -182,26 +216,7 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
                     children: [
                       Expanded(
                         child: RaisedButton(
-                          onPressed: () async {
-                            try {
-                              final DBService service =
-                                  Provider.of<FirebaseDBService>(context,
-                                      listen: false);
-                              await service.initializeUserInfo(
-                                  salary,
-                                  forInvestment,
-                                  allObligatorsSumm,
-                                  forRainyDays,
-                                  balanceAfterAll);
-                            } catch (e) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ErrorScreen(
-                                            msg: e.toString(),
-                                          )));
-                            }
-                          },
+                          onPressed: pushInformation,
                           color: Color(0xffFB3B3B),
                           child: Text(
                             "Добавить",
