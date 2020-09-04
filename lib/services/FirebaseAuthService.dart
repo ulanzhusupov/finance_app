@@ -15,7 +15,16 @@ class FirebaseAuthService implements AuthService {
       return null;
     }
 
-    return User(uid: user.uid, email: user.email);
+    bool isInfoAdded = user.displayName == "added" ? true : false;
+
+    return User(uid: user.uid, email: user.email, isAddedInfo: isInfoAdded);
+  }
+
+  Future<User> updateUserInfo() async {
+    auth.User user = await _fireAuth.currentUser;
+    user.updateProfile(displayName: "added");
+
+    return _userFromFirebase(user);
   }
 
   @override

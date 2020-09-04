@@ -9,10 +9,11 @@ import "package:uuid/uuid.dart";
 
 class User {
   
-  User({@required this.uid, this.email});
+  User({@required this.uid, this.email, this.isAddedInfo});
 
   final String uid;
   final String email;
+  bool isAddedInfo = false;
   int salary;
   // User({@required this.uuid, @required this.name, @required this.email});
 

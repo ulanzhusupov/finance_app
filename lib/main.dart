@@ -77,12 +77,12 @@ class ScreenWrapper extends StatelessWidget {
         builder: (_, AsyncSnapshot<User> snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             final User user = snapshot.data;
-            print("#### This is uid: "+user.uid);
+            print("##################22222222222 This is user: "+snapshot.data.toString());
             double userSalary = Provider.of<UserProvider>(context).salary;
 
             if (user == null) {
               return WelcomeScreen();
-            } else if (user != null && userSalary == null) {
+            } else if (user != null && user.isAddedInfo == true) {
               Provider.of<UserProvider>(context).setUid(user.uid);
               return AddInformationScreen();
             } else {

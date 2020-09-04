@@ -5,11 +5,13 @@ class MonthlyPaymentCard extends StatelessWidget {
   const MonthlyPaymentCard({
     Key key,
     this.title,
-    this.lastPayment
+    this.lastPayment,
+    this.investment
   }) : super(key: key);
 
   final String title;
   final String lastPayment;
+  final double investment;
 
 
 
@@ -34,9 +36,14 @@ class MonthlyPaymentCard extends StatelessWidget {
         childrenPadding: EdgeInsets.only(top: 0.0, left: 30.0, bottom: 15.0, right: 30.0),
         expandedAlignment: Alignment.centerLeft,
         children: [
-          Text("На инвестиции будут взяты 10%",
+          Text("На инвестиции будут взяты 10%, точнее:",
               style:
                   kRegularTextStyle.copyWith(color: Colors.black)),
+          Text("$investment₽",
+          textAlign: TextAlign.start,
+              style:
+                  kRegularTextStyle.copyWith(color: Colors.black)),
+                  
         ],
       ),
     );

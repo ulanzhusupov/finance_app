@@ -4,6 +4,7 @@ import 'package:finance_manager/model/ObligatorPayment.dart';
 import 'package:finance_manager/provider/UserProvider.dart';
 import 'package:finance_manager/screens/ErrorScreen.dart';
 import 'package:finance_manager/screens/MainScreenHolder.dart';
+import 'package:finance_manager/services/AuthService.dart';
 import 'package:finance_manager/services/DBService.dart';
 import 'package:finance_manager/services/FirebaseDBService.dart';
 import 'package:finance_manager/services/TextFieldControllerFactory.dart';
@@ -71,6 +72,7 @@ class _AddInformationScreenState extends State<AddInformationScreen> {
       
       await service.initializeUserInfo(uid, salary, forInvestment, allObligatorsSumm,
           forRainyDays, balanceAfterAll);
+      await Provider.of<AuthService>(context, listen: false).updateUserInfo();
       
       double dayBalance = (balanceAfterAll / 30);
 

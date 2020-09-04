@@ -10,6 +10,7 @@ import 'package:finance_manager/model/User.dart';
 // }
 
 abstract class AuthService  {
+  Future<User> updateUserInfo();
   Future<User> currentUser();
   Future<User> signInWithEmailAndPassword(String email, String password);
   Future<User> createUserWithEmailAndPassword(String email, String password);
